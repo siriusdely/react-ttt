@@ -1,51 +1,107 @@
-class Clock extends React.Component {
+function toCelsius(fahrenheit) {
+  return (fahrenheit - 32) * 5 / 9;
+}
+
+function toFahrenheit(celsius) {
+  return (celsius * 9 / 5) + 32;
+}
+
+function tryConvert(temperature, convertTo) {
+  const input = parseFloat(temperature);
+  if (Number.isNaN(input)) {
+    return "";
+  }
+  const output = convertTo(input);
+  const rounded = Math.round(output * 1000) / 1000;
+  return rounded.toString();
+}
+
+const scaleNames = {
+  c: "Celsius",
+  f: "Fahrenheit"
+};
+
+function BoilingVerdict(props) {
+  if (props.celsius >= 100) {
+    return <p>The water would boil.</p>;
+  }
+  return <p>The water would not boil</p>;
+}
+
+class TemperatureInput extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { date: new Date() };
+    this.handleChange = this.handleChange.bind(this);
   }
 
-  componentDidMount() {
-    this.timerID = setInterval(
-      () => this.tick(),
-      1000
+  handleChange(e) {
+    this.props.onTemperatureChange(e.target.value);
+  }
+
+  render() {
+    const temperature = this.props.temperature;
+    const scale = this.props.scale;
+    return (
+      <fieldset>
+        <legend>Enter temperature in { scaleNames[scale] }:</legend>
+        <input
+          value={ temperature }
+          onChange={ this.handleChange } />
+      </fieldset>
     );
   }
+}
 
-  componentWillUnmount() {
-    clearInterval(this.timerID);
+class Calculator extends React.Component {
+  constructor(props) {
+    super(props);
+    this.handleCelsiusChange = this.handleCelsiusChange.bind(this);
+    this.handleFahrenheitChange = this.handleFahrenheitChange.bind(this);
+    this.state = {
+      temperature: "",
+      scale: "c",
+    };
   }
 
-  tick() {
+  handleCelsiusChange(temperature) {
     this.setState({
-      date: new Date()
+      temperature,
+      scale: "c",
+    });
+  }
+
+  handleFahrenheitChange(temperature) {
+    this.setState({
+      temperature,
+      scale: "f",
     });
   }
 
   render() {
+    const scale = this.state.scale;
+    const temperature = this.state.temperature;
+    const celsius = scale === "c" ? temperature : tryConvert(temperature, toCelsius);
+    const fahrenheit = scale === "f" ? temperature : tryConvert(temperature, toFahrenheit);
     return (
       <div>
-        <h1>Hello, world!</h1>
-        <FormattedDate date={ this.state.date }/>
+        <TemperatureInput
+          scale="c"
+          temperature={ celsius }
+          onTemperatureChange={ this.handleCelsiusChange } />
+
+        <TemperatureInput
+          scale="f"
+          temperature={ fahrenheit }
+          onTemperatureChange={ this.handleFahrenheitChange } />
+
+        <BoilingVerdict
+          celsius={ parseFloat(celsius) } />
       </div>
     );
   }
 }
 
-function FormattedDate(props) {
-  return <h2>It is { props.date.toLocaleTimeString() }.</h2>;
-}
-
-function App() {
-  return (
-    <div>
-      <Clock />
-      <Clock />
-      <Clock />
-    </div>
-  );
-}
-
 ReactDOM.render(
-  <App />,
+  <Calculator />,
   document.getElementById("root")
 );
