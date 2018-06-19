@@ -86,10 +86,10 @@ class ProductsListTable extends React.Component {
 }
 
 class FilterableSearchBar extends React.Component {
+  /*
   constructor(props) {
     super(props);
   }
-
   handleKeywordChange = (e) => {
     this.props.onKeywordChange(e);
   }
@@ -97,7 +97,7 @@ class FilterableSearchBar extends React.Component {
   handleCheckboxChange = (e) => {
     this.props.onCheckboxChange(e);
   }
-
+  */
   render() {
     return (
       <form>
@@ -129,6 +129,7 @@ class FilterableProductsTable extends React.Component {
   }
 
   handleKeywordChange = (e) => {
+    e.preventDefault();
     this.setState({ filteringKeyword: e.target.value });
   }
 
