@@ -6,6 +6,8 @@ import 'todomvc-app-css/index.css';
 
 // import 'todomvc-common/base.js';
 
+import Model from './model';
+
 class TodoItem extends Component {
   render() {
     return (
@@ -26,7 +28,39 @@ class TodoItem extends Component {
 }
 
 class TodoApp extends Component {
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      editing: null,
+      newTodo: ''
+    };
+  }
+
   render() {
+    var main;
+    var todos = this.props.model.todos;
+    console.log(JSON.stringify(todos));
+
+    var todoItems = todos.map(function(todo) {
+      return (
+        <TodoItem key={ todo.id }
+                  todo={ todo } />
+      );
+    }, this);
+
+    if (todos.length) {
+      main = (
+        <section className='main'> 
+          <input className='toggle-all'
+                 type='checkbox' />
+          <ul className='todo-list'>
+            { todoItems }
+          </ul>
+        </section>
+      );
+    }
+
     return (
       <section className='todoapp'>
         <div>
@@ -35,20 +69,14 @@ class TodoApp extends Component {
             <input className='new-todo'
                    placeholder='What needs to be done?'
                    autoFocus={ true } />
-            <section className='main'>
-              <input className='toggle-all'
-                     type='checkbox' />
-              <ul className='todo-list'>
-                <TodoItem />
-                <TodoItem />
-                <TodoItem />
-              </ul>
-            </section>
           </header>
+          { main }
         </div>
       </section>
     );
   }
 }
 
-ReactDom.render(<TodoApp />, document.getElementById('root'));
+const model = new Model('react-todos');
+
+ReactDom.render(<TodoApp model={ model } />, document.getElementById('root'));
