@@ -16,7 +16,7 @@ class TodoItem extends Component {
           <input className='toggle'
                  type='checkbox' />
           <label>
-            Single Todo Title
+            { this.props.todo.title }
           </label>
           <button className='destroy' />
         </div>
@@ -29,18 +29,41 @@ class TodoItem extends Component {
 
 class TodoApp extends Component {
 
+  ENTER_KEY = 13;
+
   constructor(props) {
     super(props);
     this.state = {
       editing: null,
       newTodo: ''
     };
+
+    this.handleChange = this.handleChange.bind(this);
+  }
+
+  handleChange(e) {
+    this.setState({
+      newTodo: e.target.value
+    });
+  }
+
+  handleNewTodoKeyDown(e) {
+    if (e.keyCode !== this.ENTER_KEY) { return; }
+    e.preventDefault();
+
+    const val = this.state.newTodo.trim();
+
+    if (val) {
+      this.props.model.addTodo(val);
+      this.setState({ newTodo: ''});
+    }
   }
 
   render() {
     var main;
     var todos = this.props.model.todos;
-    console.log(JSON.stringify(todos));
+    // this.props.model.addTodo('Single Todo Title');
+    // console.log(JSON.stringify(todos));
 
     var todoItems = todos.map(function(todo) {
       return (
@@ -68,6 +91,9 @@ class TodoApp extends Component {
             <h1>todos</h1>
             <input className='new-todo'
                    placeholder='What needs to be done?'
+                   value={ this.state.newTodo }
+                   onChange={ this.handleChange }
+                   onKeyDown={ this.handleNewTodoKeyDown.bind(this) }
                    autoFocus={ true } />
           </header>
           { main }
