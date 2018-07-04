@@ -20,6 +20,37 @@ class TodoItem extends Component {
     this.state = { editText: props.todo.title }
   }
 
+	/**
+	 * This is a completely optional performance enhancement that you can
+	 * implement on any React component. If you were to delete this method
+	 * the app would still work correctly (and still be very performant!), we
+	 * just use it as an example of how little code it takes to get an order
+	 * of magnitude performance improvement.
+	 */
+  shouldComponentUpdate(nextProps, nextState) {
+    // console.log('shouldComponentUpdate');
+    return (
+      nextProps.todo !== this.props.todo ||
+      nextProps.editing !== this.props.editing ||
+      nextState.editText !== this.state.editText
+    );
+  }
+
+  /**
+   * Safely manipulate the DOM after updating the state when invoking
+	 * `this.props.onEdit()` in the `handleEdit` method below.
+	 * For more info refer to notes at https://facebook.github.io/react/docs/component-api.html#setstate
+	 * and https://facebook.github.io/react/docs/component-specs.html#updating-componentdidupdate
+	 */
+  componentDidUpdate(prevProps) {
+    // console.log('componentDidUpdate');
+    if (!prevProps.editing && this.props.editing) {
+      var node = ReactDom.findDOMNode(this.refs.editField);
+      node.focus();
+      node.setSelectionRange(node.value.length, node.value.length);
+    }
+  }
+
   handleEdit() {
     this.props.onEdit();
     this.setState({ editText: this.props.todo.title });
@@ -136,6 +167,7 @@ class TodoApp extends Component {
     };
     this.handleChange = this.handleChange.bind(this);
     this.clearCompleted = this.clearCompleted.bind(this);
+    this.cancel = this.cancel.bind(this);
   }
 
   componentDidMount() {
