@@ -17,7 +17,7 @@ import Utils from './utils';
 class TodoItem extends Component {
   constructor(props) {
     super(props);
-    this.state = { editText: props.todo.title }
+    this.state = { editText: props.todo.title, dragged: false }
   }
 
 	/**
@@ -33,6 +33,7 @@ class TodoItem extends Component {
       nextProps.todo !== this.props.todo ||
       nextProps.editing !== this.props.editing ||
       nextState.editText !== this.state.editText
+      || nextState.dragged !== this.state.dragged
     );
   }
 
@@ -81,12 +82,40 @@ class TodoItem extends Component {
     }
   }
 
+  handleDragStart = (e) => {
+    console.log('handleDragStart', e.target.id);
+    e.dataTransfer.setData('text', e.target.id);
+    this.setState({ dragged: true });
+  }
+
+  handleDrop = (e) => {
+    // console.log('handleDrop', e.target);
+    // e.persist();
+    // console.log('handleDrop', e.nativeEvent);
+    console.log('handleDrop', e.currentTarget.id);
+    if (e.currentTarget.id) {
+      const targetId = e.dataTransfer.getData('text', e.target.id);
+      console.log('targetId', targetId);
+    }
+    e.dataTransfer.clearData();
+  }
+
+  handleDragEnd = (e) => {
+    console.log('handleDragEnd', e.target.id);
+    this.setState({ dragged: false });
+  }
+
   render() {
     return (
-      <li className={ ClassNames({
-          completed: this.props.todo.completed,
-          editing: this.props.editing
-      }) }>
+      <li draggable id={ this.props.todo.title }
+          onDragStart={ this.handleDragStart }
+          onDragOver={ (e) => { e.preventDefault() } }
+          onDrop={ this.handleDrop }
+          onDragEnd={ this.handleDragEnd }
+          className={ ClassNames({
+              completed: this.props.todo.completed,
+              editing: this.props.editing
+          }) }>
         <div className='view'>
           <input className='toggle'
                  type='checkbox'
