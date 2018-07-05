@@ -78,5 +78,26 @@ Model.prototype.clearCompleted = function() {
   this.inform();
 };
 
+Model.prototype.swap = function(todoId, withTodoId) {
+  var firstTodo, secondTodo;
+  this.todos.forEach(function(todo) {
+    if (todo.id === todoId) { firstTodo = todo; }
+    if (todo.id === withTodoId) { secondTodo = todo; }
+  });
+  // console.log(`todoId: ${todoId}, ${JSON.stringify(firstTodo)}` +
+  //             ` withTodoId: ${withTodoId}, ${JSON.stringify(secondTodo)}`);
+  this.todos = this.todos.map(function(todo) {
+    if (todo === firstTodo) {
+      return secondTodo;
+    } else if (todo === secondTodo) {
+      return firstTodo;
+    } else {
+      return todo;
+    }
+  });
+
+  this.inform();
+}
+
 // module.exports = Model;
 export default Model;

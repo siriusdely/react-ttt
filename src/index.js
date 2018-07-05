@@ -83,33 +83,47 @@ class TodoItem extends Component {
   }
 
   handleDragStart = (e) => {
-    console.log('handleDragStart', e.target.id);
+    // console.log('handleDragStart', e.target.id);
+    // e.dataTransfer.effectAllowed = 'move';
+    // e.dataTransfer.dropEffect = 'move';
     e.dataTransfer.setData('text', e.target.id);
     this.setState({ dragged: true });
+  }
+
+  handleDragOver = (e) => {
+    e.preventDefault();
+    // e.dataTransfer.dropEffect = 'move';
   }
 
   handleDrop = (e) => {
     // console.log('handleDrop', e.target);
     // e.persist();
     // console.log('handleDrop', e.nativeEvent);
-    console.log('handleDrop', e.currentTarget.id);
-    if (e.currentTarget.id) {
-      const targetId = e.dataTransfer.getData('text', e.target.id);
-      console.log('targetId', targetId);
+    // console.log('handleDrop', e.currentTarget);
+    const targetId = e.dataTransfer.getData('text', e.target.id);
+    var currentTargetId = e.currentTarget.id;
+    // console.log('handleDrop', targetId, currentTargetId);
+
+    if (currentTargetId && targetId !== currentTargetId) {
+      // console.log('targetId', targetId);
+      this.props.onSwap(targetId, currentTargetId);
     }
     e.dataTransfer.clearData();
   }
 
   handleDragEnd = (e) => {
-    console.log('handleDragEnd', e.target.id);
-    this.setState({ dragged: false });
+    // console.log('handleDragEnd', e.target.id);
+    this.setState({
+      dragged: false,
+      // editText: ''
+    });
   }
 
   render() {
     return (
-      <li draggable id={ this.props.todo.title }
+      <li draggable id={ this.props.todo.id }
           onDragStart={ this.handleDragStart }
-          onDragOver={ (e) => { e.preventDefault() } }
+          onDragOver={ this.handleDragOver }
           onDrop={ this.handleDrop }
           onDragEnd={ this.handleDragEnd }
           className={ ClassNames({
@@ -197,6 +211,7 @@ class TodoApp extends Component {
     this.handleChange = this.handleChange.bind(this);
     this.clearCompleted = this.clearCompleted.bind(this);
     this.cancel = this.cancel.bind(this);
+    this.swap = this.swap.bind(this);
   }
 
   componentDidMount() {
@@ -221,7 +236,6 @@ class TodoApp extends Component {
     e.preventDefault();
 
     const val = this.state.newTodo.trim();
-
     if (val) {
       this.props.model.addTodo(val);
       this.setState({ newTodo: ''});
@@ -258,6 +272,10 @@ class TodoApp extends Component {
     this.props.model.clearCompleted();
   }
 
+  swap(todoId, withTodoId) {
+    this.props.model.swap(todoId, withTodoId);
+  }
+
   render() {
     var todos = this.props.model.todos;
     // this.props.model.addTodo('Single Todo Title');
@@ -283,6 +301,7 @@ class TodoApp extends Component {
                   editing={ this.state.editing === todo.id }
                   onSave={ this.save.bind(this, todo) }
                   onCancel={ this.cancel }
+                  onSwap={ this.swap }
         />
       );
     }, this);
