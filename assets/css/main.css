@@ -3,17 +3,17 @@ li.placeholder {
 }
 
 li.placeholder:before {
-  content: "Drop here";
   color: rgb(225, 210, 90);
+  content: "Drop here";
 }
 
 ul {
   list-style: none;
   margin: 0;
-  padding: 0
+  padding: 0;
 }
 
 li {
+  background: #eee;
   padding: 5px;
-  background: #eee
 }
