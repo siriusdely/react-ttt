@@ -1,14 +1,14 @@
 import React from 'react';
 import { render } from 'react-dom';
 import { Provider} from 'react-redux';
-
+/*
 import {
   addTodo,
   toggleTodo,
   setVisibilityFilter,
   VisibilityFilters
 } from './actions';
-
+*/
 import App from './components/App';
 import store from './store';
 
@@ -22,12 +22,14 @@ const unsubscribe = store.subscribe(() =>
 );
 
 // Dispatch some actions
+/*
 store.dispatch(addTodo('Learn about actions'));
 store.dispatch(addTodo('Learn about reducers'));
 store.dispatch(addTodo('Learn about store'));
 store.dispatch(toggleTodo(0));
 store.dispatch(toggleTodo(1));
-store.dispatch(setVisibilityFilter(VisibilityFilters.SHOW_COMPLETED));
+// store.dispatch(setVisibilityFilter(VisibilityFilters.SHOW_COMPLETED));
+*/
 
 // Stop listening to state updates
 unsubscribe();
