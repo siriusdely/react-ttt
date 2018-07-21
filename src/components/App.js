@@ -4,11 +4,13 @@ import AddTodo from '../containers/AddTodo';
 import VisibleTodoList from '../containers/VisibleTodoList';
 
 const App = () => (
-  <div>
-    <AddTodo />
-    <VisibleTodoList />
-    <Footer />
-  </div>
+  <section className='todoapp'>
+    <div>
+      <AddTodo />
+      <VisibleTodoList />
+      <Footer />
+    </div>
+  </section>
 );
 
 export default App;

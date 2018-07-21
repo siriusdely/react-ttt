@@ -1,14 +1,23 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import ClassNames from 'classnames';
 
 const Todo = ({ onClick, completed, text }) => {
   return (
     <li
-      onClick={ onClick }
-      style={ {
-          textDecoration: completed ? 'line-through' : 'none'
-      } }>
-      { text }
+      className={ ClassNames({
+          completed: completed
+      }) }>
+      <div className='view'>
+        <input className='toggle'
+               type='checkbox'
+               checked={ completed }
+               onChange={ onClick }
+        />
+        <label>
+          { text }
+        </label>
+      </div>
     </li>
   );
 };

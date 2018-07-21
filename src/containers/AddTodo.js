@@ -6,26 +6,23 @@ let AddTodo = ({ dispatch }) => {
   let input;
 
   return (
-    <div>
-      <form
-        onSubmit={ e => {
+    <header className='header'>
+      <h1>todos</h1>
+      <input
+        className='new-todo'
+        placeholder='What needs to be done?'
+        ref={ node => {
+            input = node;
+        } }
+        onKeyDown={ e => {
+            if (e.keyCode !== 13) { return; } // ENTER_KEY
             e.preventDefault();
-            if (!input.value.trim()) {
-              return;
-            }
+            if (!input.value.trim()) { return; }
             dispatch(addTodo(input.value));
             input.value = '';
-        } }>
-        <input
-          ref={ node => {
-              input = node;
-          } }
-        />
-        <button type='submit'>
-          Add Todo
-        </button>
-      </form>
-    </div>
+        } }
+      />
+    </header>
   );
 };
 
