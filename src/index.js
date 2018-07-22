@@ -1,11 +1,10 @@
 import 'babel-polyfill';
 
-import configureStore from './configureStore.js';
-import { selectSubreddit, fetchPosts, fetchPostsIfNeeded } from './actions.js';
+import React from 'react';
+import { render } from 'react-dom';
+import Root from './containers/Root'
 
-const store = configureStore();
-
-store.dispatch(selectSubreddit('reactjs'));
-store
-  .dispatch(fetchPostsIfNeeded('reactjs'))
-  .then(() => console.log(store.getState()));
+render(
+  <Root />,
+  document.getElementById('root')
+);
