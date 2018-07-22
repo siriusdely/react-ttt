@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 import FilterLink from '../containers/FilterLink';
-import { VisibilityFilters } from '../actions';
+import { VisibilityFilters } from '../actions/index';
 import Utils from '../utils';
 
 let Footer = ({ count }) => {

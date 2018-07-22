@@ -4,7 +4,7 @@ import {
   SET_VISIBILITY_FILTER,
   TOGGLE_TODO,
   VisibilityFilters
-} from '../actions';
+} from '../actions/index';
 
 const { SHOW_ALL }  = VisibilityFilters;
 
