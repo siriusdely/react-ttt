@@ -2,17 +2,26 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Todo from './Todo';
 
-const TodoList = ({ todos, toggleTodo }) => (
+const TodoList = ({
+  todos,
+  toggleTodo,
+  deleteTodo,
+  toggleAllTodos,
+  toggleAllActive
+}) => (
   <section className='main'>
     <input className='toggle-all'
            type='checkbox'
+           checked={ toggleAllActive }
+           onChange={ e => toggleAllTodos(e.target.checked) }
     />
     <ul className='todo-list'>
       { todos.map(todo => (
         <Todo
           key={ todo.id }
           {...todo}
-          onClick={ () => toggleTodo(todo.id) } />
+          onToggle={ () => toggleTodo(todo.id) }
+          onDelete={ () => deleteTodo(todo.id) }/>
       )) }
     </ul>
   </section>

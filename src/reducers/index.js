@@ -1,7 +1,10 @@
 import { combineReducers } from 'redux';
 import {
   ADD_TODO,
+  DELETE_TODO,
+  REMOVE_COMPLETED_TODOS,
   SET_VISIBILITY_FILTER,
+  TOGGLE_ALL_TODOS,
   TOGGLE_TODO,
   VisibilityFilters
 } from '../actions/index';
@@ -28,6 +31,12 @@ function todos(state=[], action) {
         completed: false
       }
     ];
+  case DELETE_TODO:
+    return state.filter(todo => todo.id !== action.id);
+  case REMOVE_COMPLETED_TODOS:
+    return state.filter(todo => !todo.completed);
+  case TOGGLE_ALL_TODOS:
+    return state.map(t => ({ ...t, completed: action.completed }));
   case TOGGLE_TODO:
     return state.map(
       todo => (todo.id === action.id) ?
