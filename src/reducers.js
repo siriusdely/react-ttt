@@ -24,7 +24,7 @@ function posts(
   },
   action
 ) {
-  switch (action.type) {
+  switch(action.type) {
   case INVALIDATE_SUBREDDIT:
     return Object.assign({}, state, {
       didInvalidate: true

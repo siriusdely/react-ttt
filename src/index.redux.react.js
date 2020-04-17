@@ -2,7 +2,7 @@ import 'babel-polyfill';
 
 import React from 'react';
 import { render } from 'react-dom';
-import TodoApp from './components/TodoApp';
+import TodoApp from './containers/TodoApp';
 // import Root from './containers/Root'
 
 render(

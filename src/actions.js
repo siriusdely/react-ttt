@@ -13,7 +13,7 @@ export const INVALIDATE_SUBREDDIT = 'INVALIDATE_SUBREDDIT';
 
 export function invalidateSubreddit(subreddit) {
   return {
-    type: SELECT_SUBREDDIT,
+    type: INVALIDATE_SUBREDDIT,
     subreddit
   };
 }
@@ -48,7 +48,7 @@ export function receivePostsError(subreddit, error) {
   };
 }
 
-// Meet our first thunk actoin creator!
+// Meet our first thunk action creator!
 // Though its insides are different, you would use it just any other action creator:
 // store.dispatch(fetchPosts('reactjs'))
 
